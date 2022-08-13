@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
-public class MainMenuController {
+public class MainMenuController extends helper.scene {
     @FXML
     private Button addAppointmentButton;
 
@@ -96,7 +96,7 @@ public class MainMenuController {
     }
 
     @FXML
-    void udpateAppointmentButtonClicked(ActionEvent event) {
+    void updateAppointmentButtonClicked(ActionEvent event) {
 
     }
 

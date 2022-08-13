@@ -104,14 +104,8 @@
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Label text="View Apointments By:" />
-                                    <RadioButton fx:id="monthAppointmentToggle" mnemonicParsing="false" onAction="#monthAppointmentToggleSelected" selected="true" text="Month">
-                                       <toggleGroup>
-                                          <ToggleGroup fx:id="appointmentToggle" />
-                                       </toggleGroup></RadioButton>
-                                    <RadioButton fx:id="weekAppointmentToggle" mnemonicParsing="false" onAction="#weekAppointmentToggleSelected" text="Week" toggleGroup="$appointmentToggle" />
                                     <Button fx:id="addAppointmentButton" mnemonicParsing="false" onAction="#addAppointmentButtonClicked" prefWidth="130.0" text="Add Appointment" />
-                                    <Button fx:id="updateAppointmentButton" mnemonicParsing="false" onAction="#udpateAppointmentButtonClicked" prefWidth="130.0" text="Update Appointment" />
+                                    <Button fx:id="updateAppointmentButton" mnemonicParsing="false" onAction="#updateAppointmentButtonClicked" prefWidth="130.0" text="Update Appointment" />
                                     <Button fx:id="deleteAppointment" mnemonicParsing="false" onAction="#deleteAppointmentButtonClicked" prefWidth="130.0" text="Delete Appointment" />
                                  </children>
                                  <VBox.margin>
@@ -138,6 +132,24 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" />
                                  </VBox.margin>
                               </TableView>
+                              <HBox spacing="30.0">
+                                 <children>
+                                    <Label text="View Apointments By:" />
+                                    <RadioButton fx:id="allAppointmentToggle1" layoutX="126.0" layoutY="10.0" mnemonicParsing="false" onAction="#allAppointmentToggleSelected" selected="true" text="All">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="appointmentToggle1" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="monthAppointmentToggle" mnemonicParsing="false" onAction="#monthAppointmentToggleSelected" selected="true" text="Month">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="appointmentToggle" />
+                                       </toggleGroup></RadioButton>
+                                    <RadioButton fx:id="weekAppointmentToggle" mnemonicParsing="false" onAction="#weekAppointmentToggleSelected" text="Week" toggleGroup="$appointmentToggle" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" />
+                                 </VBox.margin>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>
