@@ -41,7 +41,7 @@
                               </Label>
                               <Button fx:id="totalAppointmentsButton" mnemonicParsing="false" onAction="#totalAppointmentsButtonClicked" prefWidth="130.0" text="Total Appointments" />
                               <Button fx:id="schedulesButton" mnemonicParsing="false" onAction="#schedulesButtonClicked" prefWidth="130.0" text="Schedules" />
-                              <Button fx:id="appointmentHistoryButton" mnemonicParsing="false" onAction="#appointmentHIstoryButtonClicked" prefWidth="130.0" text="Appointment History" />
+                              <Button fx:id="appointmentHistoryButton" mnemonicParsing="false" onAction="#appointmentHistoryButtonClicked" prefWidth="130.0" text="Appointment History" />
                            </children>
                            <VBox.margin>
                               <Insets top="10.0" />
@@ -50,7 +50,7 @@
                         <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="731.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Label text="Logged in as: userName" />
-                              <Button fx:id="logoutButon" mnemonicParsing="false" onAction="#logoutButtonClicked" text="Logout" />
+                              <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonClicked" text="Logout" />
                            </children>
                         </VBox>
                      </children>
@@ -135,7 +135,7 @@
                               <HBox spacing="30.0">
                                  <children>
                                     <Label text="View Apointments By:" />
-                                    <RadioButton fx:id="allAppointmentToggle1" layoutX="126.0" layoutY="10.0" mnemonicParsing="false" onAction="#allAppointmentToggleSelected" selected="true" text="All">
+                                    <RadioButton fx:id="allAppointmentToggle" layoutX="126.0" layoutY="10.0" mnemonicParsing="false" onAction="#allAppointmentToggleSelected" selected="true" text="All">
                                        <toggleGroup>
                                           <ToggleGroup fx:id="appointmentToggle1" />
                                        </toggleGroup>

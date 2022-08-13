@@ -1,5 +1,6 @@
 package controller;
 
+import helper.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -7,7 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
-public class MainMenuController extends helper.scene {
+import java.io.IOException;
+
+public class MainMenuController extends controller {
     @FXML
     private Button addAppointmentButton;
 
@@ -27,7 +30,7 @@ public class MainMenuController extends helper.scene {
     private Button deleteCustomerButton;
 
     @FXML
-    private Button logoutButon;
+    private Button logoutButton;
 
     @FXML
     private RadioButton monthAppointmentToggle;
@@ -51,6 +54,9 @@ public class MainMenuController extends helper.scene {
     private RadioButton weekAppointmentToggle;
 
     @FXML
+    private RadioButton allAppointmentToggle;
+
+    @FXML
     void addAppointmentButtonClicked(ActionEvent event) {
 
     }
@@ -61,7 +67,7 @@ public class MainMenuController extends helper.scene {
     }
 
     @FXML
-    void appointmentHIstoryButtonClicked(ActionEvent event) {
+    void appointmentHistoryButtonClicked(ActionEvent event) {
 
     }
 
@@ -76,8 +82,8 @@ public class MainMenuController extends helper.scene {
     }
 
     @FXML
-    void logoutButtonClicked(ActionEvent event) {
-
+    void logoutButtonClicked(ActionEvent event) throws IOException {
+    changeScene(event, "/com/example/model/LoginForm.fxml");
     }
 
     @FXML
@@ -111,4 +117,8 @@ public class MainMenuController extends helper.scene {
     }
 
 
+    @FXML
+    void allAppointmentToggleSelected(ActionEvent event) {
+
+    }
 }

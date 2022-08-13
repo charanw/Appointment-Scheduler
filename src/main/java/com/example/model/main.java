@@ -1,6 +1,7 @@
 package com.example.model;
 
 import helper.JDBC;
+import helper.userQuery;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

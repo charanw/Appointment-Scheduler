@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -49,9 +50,9 @@
                     </rowConstraints>
                      <children>
                         <TextField fx:id="userNameField" prefWidth="200.0" GridPane.columnIndex="1" />
-                        <TextField fx:id="passwordField" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="userNameLabel" text="User Name:" />
                         <Label fx:id="passwordLabel" text="Password:" GridPane.rowIndex="1" />
+                        <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
