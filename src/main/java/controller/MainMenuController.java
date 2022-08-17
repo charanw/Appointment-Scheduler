@@ -1,6 +1,6 @@
 package controller;
 
-import helper.controller;
+import com.example.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,7 +10,9 @@ import javafx.scene.control.ToggleGroup;
 
 import java.io.IOException;
 
-public class MainMenuController extends controller {
+public class MainMenuController extends Controller {
+
+    User user;
     @FXML
     private Button addAppointmentButton;
 
@@ -56,9 +58,16 @@ public class MainMenuController extends controller {
     @FXML
     private RadioButton allAppointmentToggle;
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public void initialize(){
+    }
+
+
     @FXML
     void addAppointmentButtonClicked(ActionEvent event) {
-
+        System.out.println(user.getUserName());
     }
 
     @FXML
