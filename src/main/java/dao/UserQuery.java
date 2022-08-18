@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class UserQuery {
+public abstract class UserQuery {
 
     public static boolean login(String userName, String password) throws SQLException {
 
