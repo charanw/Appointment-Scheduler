@@ -6,6 +6,8 @@ public class Appointment {
 
 private int appointmentId;
 private String title;
+
+private String description;
 private String location;
 private String type;
 private LocalDateTime start;
@@ -86,9 +88,18 @@ private int contactId;
         this.contactId = contactId;
     }
 
-    public Appointment(int appointmentId, String title, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Appointment(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;
         this.title = title;
+        this.description = description;
         this.location = location;
         this.type = type;
         this.start = start;

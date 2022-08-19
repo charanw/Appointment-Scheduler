@@ -1,5 +1,6 @@
 package com.example.model;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.DayOfWeek;
@@ -7,8 +8,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 public abstract class ScheduleApplication {
-    private ObservableList<Customer> allCustomers;
-    private ObservableList<Appointment> allAppointments;
+    private ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
+    private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
     private LocalTime businessOpenTime;
     private LocalTime businessCloseTime;
     private ArrayList<DayOfWeek> businessOpenDays;

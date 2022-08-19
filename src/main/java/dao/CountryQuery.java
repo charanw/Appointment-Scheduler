@@ -7,9 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class CountryQuery {
-    public com.example.model.Country retrieveCountry (int countryId) throws SQLException {
+    public static com.example.model.Country retrieveCountry (int countryId) throws SQLException {
         String sql = "SELECT * FROM countries WHERE Country_ID = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ps.setString(1, (String.valueOf(countryId)));
         ResultSet rs = ps.executeQuery();
         if(rs.next()){
             String countryName = rs.getString("Country");

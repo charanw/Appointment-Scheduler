@@ -80,14 +80,14 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </HBox>
-                              <TableView prefHeight="350.0">
+                              <TableView fx:id="allCustomersTable" prefHeight="350.0">
                                 <columns>
-                                  <TableColumn prefWidth="76.79998779296875" text="Customer ID" />
-                                  <TableColumn prefWidth="211.19998168945312" text="Name" />
-                                    <TableColumn prefWidth="205.5999755859375" text="Phone" />
-                                    <TableColumn prefWidth="272.0" text="Address" />
-                                    <TableColumn prefWidth="111.199951171875" text="Postal Code" />
-                                    <TableColumn prefWidth="89.5999755859375" text="Division ID" />
+                                  <TableColumn fx:id="customerIdColumn" prefWidth="76.79998779296875" text="Customer ID" />
+                                  <TableColumn fx:id="nameColumn" prefWidth="211.19998168945312" text="Name" />
+                                    <TableColumn fx:id="phoneColumn" prefWidth="205.5999755859375" text="Phone" />
+                                    <TableColumn fx:id="addressColumn" prefWidth="272.0" text="Address" />
+                                    <TableColumn fx:id="postalCodeColumn" prefWidth="111.199951171875" text="Postal Code" />
+                                    <TableColumn fx:id="divisionIdColumn" prefWidth="89.5999755859375" text="Division ID" />
                                 </columns>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" />
@@ -115,18 +115,18 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </HBox>
-                              <TableView prefHeight="350.0" prefWidth="1030.0">
+                              <TableView fx:id="allAppointmentsTable" prefHeight="350.0" prefWidth="1030.0">
                                 <columns>
-                                  <TableColumn prefWidth="97.5999755859375" text="Appointment ID" />
-                                  <TableColumn prefWidth="57.600006103515625" text="Title" />
-                                    <TableColumn prefWidth="110.39996337890625" text="Description" />
-                                    <TableColumn minWidth="5.60003662109375" prefWidth="87.20001220703125" text="Location" />
-                                    <TableColumn minWidth="0.0" prefWidth="72.0" text="Contact" />
-                                    <TableColumn minWidth="0.0" prefWidth="88.79998779296875" text="Type" />
-                                    <TableColumn minWidth="1.5999755859375" prefWidth="114.39996337890625" text="Start" />
-                                    <TableColumn prefWidth="119.20001220703125" text="End" />
-                                    <TableColumn prefWidth="111.199951171875" text="Customer ID" />
-                                    <TableColumn minWidth="5.5999755859375" prefWidth="109.60003662109375" text="User ID" />
+                                  <TableColumn fx:id="appointmentIdColumn" prefWidth="97.5999755859375" text="Appointment ID" />
+                                  <TableColumn fx:id="titleColumn" prefWidth="57.600006103515625" text="Title" />
+                                    <TableColumn fx:id="descriptionColumn" prefWidth="110.39996337890625" text="Description" />
+                                    <TableColumn fx:id="locationColumn" minWidth="5.60003662109375" prefWidth="87.20001220703125" text="Location" />
+                                    <TableColumn fx:id="contactColumn" minWidth="0.0" prefWidth="72.0" text="Contact" />
+                                    <TableColumn fx:id="typeColumn" minWidth="0.0" prefWidth="88.79998779296875" text="Type" />
+                                    <TableColumn fx:id="startColumn" minWidth="1.5999755859375" prefWidth="114.39996337890625" text="Start" />
+                                    <TableColumn fx:id="endColumn" prefWidth="119.20001220703125" text="End" />
+                                    <TableColumn fx:id="appointmentCustomerIdColumn" prefWidth="111.199951171875" text="Customer ID" />
+                                    <TableColumn fx:id="userIdColumn" minWidth="5.5999755859375" prefWidth="109.60003662109375" text="User ID" />
                                 </columns>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" />
