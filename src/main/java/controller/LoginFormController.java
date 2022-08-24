@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.util.Locale;
 
 public class LoginFormController extends Controller {
+
     @FXML
     private Button exitButton;
 

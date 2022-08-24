@@ -1,6 +1,7 @@
 package controller;
 
 import com.example.model.*;
+import dao.AppointmentQuery;
 import dao.ScheduleApplicationQuery;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 
 public class MainMenuController extends Controller {
 
-    private User user;
+
     private ObservableList<Customer> allCustomers;
     @FXML
     private Button addAppointmentButton;
@@ -119,9 +120,13 @@ public class MainMenuController extends Controller {
     @FXML
     private TableColumn<Appointment, Integer> userIdColumn;
 
+    @FXML
+    private Label loggedInAsLabel;
+
 
     public void setUser(User user) {
         this.user = user;
+        loggedInAsLabel.setText("Logged in as: " + user.getUserName());
     }
     public void initialize() throws SQLException {
 
@@ -154,13 +159,13 @@ public class MainMenuController extends Controller {
 
 
     @FXML
-    void addAppointmentButtonClicked(ActionEvent event) {
-        System.out.println(user.getUserName());
+    void addAppointmentButtonClicked(ActionEvent event) throws IOException {
+        changeScene(event, "/com/example/model/AddAppointmentForm.fxml");
     }
 
     @FXML
-    void addCustomerButtonClicked(ActionEvent event) {
-
+    void addCustomerButtonClicked(ActionEvent event) throws IOException {
+        changeScene(event, "/com/example/model/AddCustomerForm.fxml");
     }
 
     @FXML
@@ -169,8 +174,13 @@ public class MainMenuController extends Controller {
     }
 
     @FXML
-    void deleteAppointmentButtonClicked(ActionEvent event) {
-
+    void deleteAppointmentButtonClicked(ActionEvent event) throws SQLException {
+        int appointmentId = allAppointmentsTable.getSelectionModel().getSelectedItem().getAppointmentId();
+        if (confirmation("Are you sure you want to delete appointment ID " + String.valueOf(appointmentId))){
+            AppointmentQuery.deleteAppointment(appointmentId);
+            allAppointmentsTable.setItems(ScheduleApplicationQuery.getAllAppointments());
+            alert("Appointment ID " + String.valueOf(appointmentId) + " deleted.");
+        };
     }
 
     @FXML
@@ -199,13 +209,13 @@ public class MainMenuController extends Controller {
     }
 
     @FXML
-    void updateAppointmentButtonClicked(ActionEvent event) {
-
+    void updateAppointmentButtonClicked(ActionEvent event) throws IOException {
+        changeScene(event, "/com/example/model/ModifyAppointmentForm.fxml");
     }
 
     @FXML
-    void updateCustomerButtonClicked(ActionEvent event) {
-
+    void updateCustomerButtonClicked(ActionEvent event) throws IOException {
+        changeScene(event, "/com/example/model/ModifyCustomerForm.fxml");
     }
 
     @FXML
