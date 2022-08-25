@@ -24,4 +24,8 @@ public class Country {
         this.countryId = countryId;
         this.country = country;
     }
+    @Override
+    public String toString(){
+        return ("#" + countryId + " " + country);
+    }
 }

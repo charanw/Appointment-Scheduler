@@ -3,14 +3,11 @@ package controller;
 import com.example.model.*;
 import dao.AppointmentQuery;
 import dao.ScheduleApplicationQuery;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -79,19 +76,19 @@ public class MainMenuController extends Controller {
     private TableColumn<Appointment, Integer> appointmentIdColumn;
 
     @FXML
-    private TableColumn<Appointment, Integer> contactColumn;
+    private TableColumn<Appointment, Contact> contactColumn;
 
     @FXML
     private TableColumn<Customer, Integer> customerIdColumn;
 
     @FXML
-    private TableColumn<Appointment, Integer> appointmentCustomerIdColumn;
+    private TableColumn<Appointment, Customer> appointmentCustomerColumn;
 
     @FXML
     private TableColumn<Appointment, String> descriptionColumn;
 
     @FXML
-    private TableColumn<Customer, Integer> divisionIdColumn;
+    private TableColumn<Customer, FirstLevelDivision> divisionColumn;
 
     @FXML
     private TableColumn<Appointment, LocalDateTime> endColumn;
@@ -118,7 +115,10 @@ public class MainMenuController extends Controller {
     private TableColumn<Appointment, String> typeColumn;
 
     @FXML
-    private TableColumn<Appointment, Integer> userIdColumn;
+    private TableColumn<Appointment, User> userColumn;
+
+    @FXML
+    private TableColumn<Customer, Country> countryColumn;
 
     @FXML
     private Label loggedInAsLabel;
@@ -136,25 +136,21 @@ public class MainMenuController extends Controller {
         phoneColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerPhone"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
         postalCodeColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
-        divisionIdColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Customer, Integer>, ObservableValue<Integer>>() {
-             public ObservableValue<Integer> call(TableColumn.CellDataFeatures<Customer, Integer> p) {
-                 ObservableValue<Integer> observableInt = new ReadOnlyObjectWrapper<>(p.getValue().getDivision().getDivisionId());
-                 return observableInt;
-             }
-         });
+        divisionColumn.setCellValueFactory(new PropertyValueFactory<Customer, FirstLevelDivision>("division"));
+        countryColumn.setCellValueFactory(new PropertyValueFactory<Customer, Country>("country"));
 
         allAppointmentsTable.setItems(ScheduleApplicationQuery.getAllAppointments());
         appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentId"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
         locationColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
-        contactColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contactId"));
+        contactColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Contact>("contact"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
         locationColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
         startColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("start"));
         endColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("end"));
-        appointmentCustomerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
-        userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
+        appointmentCustomerColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Customer>("customer"));
+        userColumn.setCellValueFactory(new PropertyValueFactory<Appointment, User>("user"));
     }
 
 
@@ -176,10 +172,11 @@ public class MainMenuController extends Controller {
     @FXML
     void deleteAppointmentButtonClicked(ActionEvent event) throws SQLException {
         int appointmentId = allAppointmentsTable.getSelectionModel().getSelectedItem().getAppointmentId();
-        if (confirmation("Are you sure you want to delete appointment ID " + String.valueOf(appointmentId))){
+        String appointmentTitle = allAppointmentsTable.getSelectionModel().getSelectedItem().getTitle();
+        if (confirmation("Are you sure you want to delete appointment #" + appointmentId + " " + appointmentTitle)){
             AppointmentQuery.deleteAppointment(appointmentId);
             allAppointmentsTable.setItems(ScheduleApplicationQuery.getAllAppointments());
-            alert("Appointment ID " + String.valueOf(appointmentId) + " deleted.");
+            alert("Appointment #" + appointmentId + " " + appointmentTitle + " deleted.");
         };
     }
 

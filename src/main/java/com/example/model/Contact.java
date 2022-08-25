@@ -25,4 +25,8 @@ private String contactName;
         this.contactId = contactId;
         this.contactName = contactName;
     }
+    @Override
+    public String toString(){
+        return ("#" + contactId + " " + contactName);
+    }
 }

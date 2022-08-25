@@ -20,7 +20,8 @@ public abstract class CustomerQuery {
             String postalCode = rs.getString("Postal_Code");
             String phoneNumber = rs.getString("Phone");
             FirstLevelDivision division = FirstLevelDivisionQuery.retrieveDivision(rs.getInt("Division_ID"));
-            return new Customer(customerId, customerName, phoneNumber, address, postalCode, division);
+            Country country = CountryQuery.retrieveCountry(division.getCountry().getCountryId());
+            return new Customer(customerId, customerName, phoneNumber, address, postalCode, division, country);
         }
         return null;
     }

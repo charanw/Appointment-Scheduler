@@ -1,8 +1,6 @@
 package dao;
 
-import com.example.model.Appointment;
-import com.example.model.Customer;
-import com.example.model.FirstLevelDivision;
+import com.example.model.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,14 +26,17 @@ public abstract class AppointmentQuery {
              LocalDateTime end = LocalDateTime.parse(rs.getString("End"),formatter);
 
              int customerId = rs.getInt("Customer_ID");
+             Customer customer = CustomerQuery.retrieveCustomer(customerId);
              int userId = rs.getInt("User_ID");
-             int contactId = rs.getInt("User_ID");
-             return new Appointment(appointmentId, title, description, location, type, start, end, customerId, userId, contactId);
+             User user = UserQuery.retrieveUser(userId);
+             int contactId = rs.getInt("Contact_ID");
+             Contact contact = ContactQuery.retrieveContact(contactId);
+             return new Appointment(appointmentId, title, description, location, type, start, end, customer, user, contact);
         }
         return null;
     }
 
-    public static void addAppointment(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) throws SQLException {
+    public static void addAppointment(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, Contact contact) throws SQLException {
         String sql = "INSERT INTO Appointments (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) Values (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ps.setString(1, title);
@@ -49,7 +50,7 @@ public abstract class AppointmentQuery {
 
         ps.setString(7, (String.valueOf(customerId)));
         ps.setString(8, (String.valueOf(userId)));
-        ps.setString(9, (String.valueOf(contactId)));
+        ps.setString(9, (String.valueOf(contact.getContactId())));
         ps.execute();
     }
     public static void deleteAppointment(int appointmentId) throws SQLException {

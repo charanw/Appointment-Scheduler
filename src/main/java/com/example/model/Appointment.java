@@ -12,9 +12,9 @@ private String location;
 private String type;
 private LocalDateTime start;
 private LocalDateTime end;
-private int customerId;
-private int userId;
-private int contactId;
+private Customer customer;
+private User user;
+private Contact contact;
 
     public int getAppointmentId() {
         return appointmentId;
@@ -64,28 +64,28 @@ private int contactId;
         this.end = end;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getContactId() {
-        return contactId;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setContactId(int contactId) {
-        this.contactId = contactId;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     public String getDescription() {
@@ -96,7 +96,7 @@ private int contactId;
         this.description = description;
     }
 
-    public Appointment(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
+    public Appointment(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
@@ -104,8 +104,12 @@ private int contactId;
         this.type = type;
         this.start = start;
         this.end = end;
-        this.customerId = customerId;
-        this.userId = userId;
-        this.contactId = contactId;
+        this.customer = customer;
+        this.user = user;
+        this.contact = contact;
+    }
+    @Override
+    public String toString(){
+        return ("#" + appointmentId + " " + title);
     }
 }

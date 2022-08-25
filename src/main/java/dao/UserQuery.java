@@ -9,6 +9,17 @@ import java.util.Objects;
 
 public abstract class UserQuery {
 
+    public static User retrieveUser(int userId) throws SQLException {
+        String sql = "SELECT * FROM users WHERE User_ID = ?";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ps.setString(1, (String.valueOf(userId)));
+        ResultSet rs = ps.executeQuery();
+        if(rs.next()) {
+        String userName = rs.getString("User_Name");
+        return new User(userId, userName);
+        }
+        return null;
+    }
     public static boolean login(String userName, String password) throws SQLException {
 
         User user;

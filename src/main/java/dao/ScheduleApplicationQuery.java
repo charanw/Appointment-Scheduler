@@ -1,8 +1,6 @@
 package dao;
 
-import com.example.model.Appointment;
-import com.example.model.Country;
-import com.example.model.Customer;
+import com.example.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -11,6 +9,27 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class ScheduleApplicationQuery {
+
+    public static ObservableList<Contact> getAllContacts() throws SQLException {
+        ObservableList<Contact> allUsers = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM contacts";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            allUsers.add(ContactQuery.retrieveContact(rs.getInt("Contact_ID")));
+        }
+        return allUsers;
+    }
+    public static ObservableList<User> getAllUsers() throws SQLException {
+        ObservableList<User> allUsers = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM users";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            allUsers.add(UserQuery.retrieveUser(rs.getInt("User_ID")));
+        }
+        return allUsers;
+    }
 
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
         ObservableList<Customer> allCustomers = FXCollections.observableArrayList();

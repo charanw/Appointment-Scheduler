@@ -3,16 +3,14 @@ package com.example.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 
 public abstract class ScheduleApplication {
     private ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
     private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
-    private LocalTime businessOpenTime;
-    private LocalTime businessCloseTime;
-    private ArrayList<DayOfWeek> businessOpenDays;
+    private static LocalDateTime businessOpenTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(8, 0), ZoneId.of("America/New_York")).toLocalDateTime();
+    private static LocalDateTime businessCloseTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(20, 0), ZoneId.of("America/New_York")).toLocalDateTime();;
 
     public ObservableList<Customer> getAllCustomers() {
         return allCustomers;
@@ -30,27 +28,20 @@ public abstract class ScheduleApplication {
         this.allAppointments = allAppointments;
     }
 
-    public LocalTime getBusinessOpenTime() {
+    public static LocalDateTime getBusinessOpenTime() {
         return businessOpenTime;
     }
 
-    public void setBusinessOpenTime(LocalTime businessOpenTime) {
+    public void setBusinessOpenTime(LocalDateTime businessOpenTime) {
         this.businessOpenTime = businessOpenTime;
     }
 
-    public LocalTime getBusinessCloseTime() {
+    public static LocalDateTime getBusinessCloseTime() {
         return businessCloseTime;
     }
 
-    public void setBusinessCloseTime(LocalTime businessCloseTime) {
+    public void setBusinessCloseTime(LocalDateTime businessCloseTime) {
         this.businessCloseTime = businessCloseTime;
     }
-
-    public ArrayList<DayOfWeek> getBusinessOpenDays() {
-        return businessOpenDays;
-    }
-
-    public void setBusinessOpenDays(ArrayList<DayOfWeek> businessOpenDays) {
-        this.businessOpenDays = businessOpenDays;
-    }
 }
+

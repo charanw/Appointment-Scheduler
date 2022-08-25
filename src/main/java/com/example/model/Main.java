@@ -26,9 +26,9 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException, SQLException {
         JDBC.openConnection();
-        LocalDateTime start = LocalDateTime.now();
+        /*LocalDateTime start = LocalDateTime.now();
         LocalDateTime end = LocalDateTime.now();
-        AppointmentQuery.addAppointment("Test", "Test description", "location", "coffee break", start, end, 1, 2, 3);
+        AppointmentQuery.addAppointment("Test", "Test description", "location", "coffee break", start, end, 1, 2, 3);*/
         launch();
         JDBC.closeConnection();
 

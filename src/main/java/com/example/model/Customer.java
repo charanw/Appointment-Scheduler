@@ -9,6 +9,16 @@ public class Customer {
     private String postalCode;
     private FirstLevelDivision division;
 
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    private Country country;
+
     public int getCustomerId() {
         return customerId;
     }
@@ -57,12 +67,17 @@ public class Customer {
         this.division = division;
     }
 
-    public Customer(int customerId, String customerName, String customerPhone, String address, String postalCode, FirstLevelDivision division) {
+    public Customer(int customerId, String customerName, String customerPhone, String address, String postalCode, FirstLevelDivision division, Country country) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.customerPhone = customerPhone;
         this.address = address;
         this.postalCode = postalCode;
         this.division = division;
+        this.country = country;
+    }
+    @Override
+    public String toString(){
+        return ("#" + customerId + " " + customerName);
     }
 }
