@@ -6,8 +6,12 @@ import dao.ScheduleApplicationQuery;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -171,13 +175,17 @@ public class MainMenuController extends Controller {
 
     @FXML
     void deleteAppointmentButtonClicked(ActionEvent event) throws SQLException {
-        int appointmentId = allAppointmentsTable.getSelectionModel().getSelectedItem().getAppointmentId();
-        String appointmentTitle = allAppointmentsTable.getSelectionModel().getSelectedItem().getTitle();
+        Appointment selectedAppointment = allAppointmentsTable.getSelectionModel().getSelectedItem();
+        if (selectedAppointment != null){
+        int appointmentId = selectedAppointment.getAppointmentId();
+        String appointmentTitle = selectedAppointment.getTitle();
         if (confirmation("Are you sure you want to delete appointment #" + appointmentId + " " + appointmentTitle)){
             AppointmentQuery.deleteAppointment(appointmentId);
             allAppointmentsTable.setItems(ScheduleApplicationQuery.getAllAppointments());
             alert("Appointment #" + appointmentId + " " + appointmentTitle + " deleted.");
-        };
+        }} else {
+            error("No appointment selected. Please select an appointment and try again.");
+        }
     }
 
     @FXML
@@ -207,7 +215,21 @@ public class MainMenuController extends Controller {
 
     @FXML
     void updateAppointmentButtonClicked(ActionEvent event) throws IOException {
-        changeScene(event, "/com/example/model/ModifyAppointmentForm.fxml");
+        Appointment appointment = allAppointmentsTable.getSelectionModel().getSelectedItem();
+        if(appointment != null){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/com/example/model/ModifyAppointmentForm.fxml"));
+        loader.load();
+
+        ModifyAppointmentFormController controller = loader.getController();
+        controller.setAppointment(appointment);
+
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        Parent scene = loader.getRoot();
+        stage.setScene(new Scene(scene));
+        stage.show();} else {
+            error("No appointment selected. Please select an appointment and try again.");
+        }
     }
 
     @FXML

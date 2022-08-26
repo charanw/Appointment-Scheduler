@@ -53,6 +53,25 @@ public abstract class AppointmentQuery {
         ps.setString(9, (String.valueOf(contact.getContactId())));
         ps.execute();
     }
+
+    public static void updateAppointment(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, Contact contact) throws SQLException {
+        String sql = "UPDATE Appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ps.setString(1, title);
+        ps.setString(2, description);
+        ps.setString(3, location);
+        ps.setString(4, type);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ps.setString(5, (start.format(formatter)));
+        ps.setString(6, (end.format(formatter)));
+
+        ps.setString(7, (String.valueOf(customerId)));
+        ps.setString(8, (String.valueOf(userId)));
+        ps.setString(9, (String.valueOf(contact.getContactId())));
+        ps.setString(10, (String.valueOf(appointmentId)));
+        ps.execute();
+    }
     public static void deleteAppointment(int appointmentId) throws SQLException {
         String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);

@@ -82,24 +82,18 @@ public class AddAppointmentFormController extends Controller {
         customerComboBox.setItems(allCustomers);
         customerComboBox.setPromptText("Select a customer:");
 
-        LocalTime openTime = ScheduleApplication.getBusinessOpenTime().toLocalTime();
-        LocalTime closeTime = ScheduleApplication.getBusinessCloseTime().toLocalTime();
-        while(openTime.isBefore(closeTime.plusSeconds(1))) {
-            startTimeComboBox.getItems().add(openTime);
-            openTime = openTime.plusMinutes(15);
+        LocalTime time = LocalTime.of(00,00);
+        while(time.isBefore(LocalTime.of(12, 00))) {
+            startTimeComboBox.getItems().add(time);
+            endTimeComboBox.getItems().add(time);
+            time = time.plusMinutes(30);
         }
     }
 
 
     @FXML
     void startTimeUpdated(ActionEvent event) {
-        endTimeComboBox.getItems().clear();
-        LocalTime startTime = startTimeComboBox.getSelectionModel().getSelectedItem();
-        LocalTime closeTime = ScheduleApplication.getBusinessCloseTime().toLocalTime();
-        while(startTime.isBefore(closeTime)) {
-            endTimeComboBox.getItems().add(startTime.plusMinutes(15));
-            if(startTime.isBefore(closeTime)){startTime = startTime.plusMinutes(15);}
-        }
+
     }
     @FXML
     void cancelButtonClicked(ActionEvent event) throws IOException {
@@ -114,7 +108,6 @@ public class AddAppointmentFormController extends Controller {
         String type = typeField.getText();
 
         Contact contact = contactComboBox.getSelectionModel().getSelectedItem();
-        int contactId = contact.getContactId();
 
         LocalDate startDate = startDatePicker.getValue();
         LocalTime startTime = startTimeComboBox.getSelectionModel().getSelectedItem();
@@ -130,9 +123,20 @@ public class AddAppointmentFormController extends Controller {
         User user = userComboBox.getSelectionModel().getSelectedItem();
         int userId = user.getUserId();
 
-        AppointmentQuery.addAppointment(title, description, location, type, startDateTime, endDateTime, customerId, userId, contact);
+        LocalTime openTime = ScheduleApplication.getBusinessOpenTime().toLocalTime();
+        LocalTime closeTime = ScheduleApplication.getBusinessCloseTime().toLocalTime();
 
+
+if (startDateTime.isBefore(endDateTime)) {
+    if (startTime.isAfter(openTime) && endTime.isBefore(closeTime)) {
+        AppointmentQuery.addAppointment(title, description, location, type, startDateTime, endDateTime, customerId, userId, contact);
         changeScene(event, "/com/example/model/MainMenu.fxml");
+    } else {
+        error("Invalid data. Start time must be in-between business hours of 8:00 am and 10:00 pm EST.");
+    }
+} else {
+    error("Invalid data. Start date and time must be before end date and time.");
+}
     }
 
 }
