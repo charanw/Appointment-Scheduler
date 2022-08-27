@@ -1,6 +1,8 @@
 package dao;
 
 import com.example.model.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,4 +52,15 @@ public abstract class UserQuery {
         }
         return false;
     };
+
+    public static ObservableList<User> getAllUsers() throws SQLException {
+        ObservableList<User> allUsers = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM users";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            allUsers.add(retrieveUser(rs.getInt("User_ID")));
+        }
+        return allUsers;
+    }
 }

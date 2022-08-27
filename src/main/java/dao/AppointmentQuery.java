@@ -1,6 +1,8 @@
 package dao;
 
 import com.example.model.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -77,5 +79,29 @@ public abstract class AppointmentQuery {
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ps.setString(1, (String.valueOf(appointmentId)));
         ps.execute();
+    }
+    public static ObservableList<Appointment> getCustomerAppointments(int customerId) throws SQLException {
+        String sql = "SELECT * FROM appointments WHERE Customer_ID = ?";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ps.setString(1, (String.valueOf(customerId)));
+        ResultSet rs = ps.executeQuery();
+        ObservableList<Appointment> customerAppointments = FXCollections.observableArrayList();
+        while(rs.next()){
+            int appointmentId = rs.getInt("Appointment_ID");
+            customerAppointments.add(retrieveAppointment(appointmentId));
+            return customerAppointments;
+        }
+        return null;
+    }
+
+    public static ObservableList<Appointment> getAllAppointments() throws SQLException {
+        ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM appointments";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            allAppointments.add(retrieveAppointment(rs.getInt("Appointment_ID")));
+        }
+        return allAppointments;
     }
 }

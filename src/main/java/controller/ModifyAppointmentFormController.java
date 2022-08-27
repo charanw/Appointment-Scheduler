@@ -1,8 +1,7 @@
 package controller;
 
 import com.example.model.*;
-import dao.AppointmentQuery;
-import dao.ScheduleApplicationQuery;
+import dao.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,9 +13,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 
 public class ModifyAppointmentFormController extends Controller {
 
@@ -84,7 +81,7 @@ public class ModifyAppointmentFormController extends Controller {
         customerComboBox.getSelectionModel().select(appointment.getCustomer());
         userComboBox.getSelectionModel().select(appointment.getUser());
         LocalTime startTime = startTimeComboBox.getSelectionModel().getSelectedItem();
-        LocalTime closeTime = ScheduleApplication.getBusinessCloseTime().toLocalTime();
+        LocalTime closeTime =ZonedDateTime.of(LocalDate.now(), LocalTime.of(8, 0), ZoneId.of("America/New_York")).toLocalTime();
         while (startTime.isBefore(closeTime)) {
             endTimeComboBox.getItems().add(startTime.plusMinutes(15));
             if (startTime.isBefore(closeTime)) {
@@ -93,17 +90,17 @@ public class ModifyAppointmentFormController extends Controller {
         }
     }
     public void initialize() throws SQLException {
-        allContacts = ScheduleApplicationQuery.getAllContacts();
+        allContacts = ContactQuery.getAllContacts();
         contactComboBox.setItems(allContacts);
 
-        allUsers = ScheduleApplicationQuery.getAllUsers();
+        allUsers = UserQuery.getAllUsers();
         userComboBox.setItems(allUsers);
 
-        allCustomers = ScheduleApplicationQuery.getAllCustomers();
+        allCustomers = CustomerQuery.getAllCustomers();
         customerComboBox.setItems(allCustomers);
 
-        LocalTime openTime = ScheduleApplication.getBusinessOpenTime().toLocalTime();
-        LocalTime closeTime = ScheduleApplication.getBusinessCloseTime().toLocalTime();
+        LocalTime openTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(8, 0), ZoneId.of("America/New_York")).toLocalTime();
+        LocalTime closeTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(20, 0), ZoneId.of("America/New_York")).toLocalTime();
         while (openTime.isBefore(closeTime.plusSeconds(1))) {
             startTimeComboBox.getItems().add(openTime);
             openTime = openTime.plusMinutes(15);
@@ -115,7 +112,7 @@ public class ModifyAppointmentFormController extends Controller {
     void startTimeUpdated(ActionEvent event) {
         endTimeComboBox.getItems().clear();
         LocalTime startTime = startTimeComboBox.getSelectionModel().getSelectedItem();
-        LocalTime closeTime = ScheduleApplication.getBusinessCloseTime().toLocalTime();
+        LocalTime closeTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(20, 0), ZoneId.of("America/New_York")).toLocalTime();
         while(startTime.isBefore(closeTime)) {
             endTimeComboBox.getItems().add(startTime.plusMinutes(15));
             if(startTime.isBefore(closeTime)) {
