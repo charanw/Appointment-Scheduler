@@ -234,7 +234,21 @@ public class MainMenuController extends Controller {
 
     @FXML
     void updateCustomerButtonClicked(ActionEvent event) throws IOException {
-        changeScene(event, "/com/example/model/ModifyCustomerForm.fxml");
+        Customer customer = allCustomersTable.getSelectionModel().getSelectedItem();
+        if(customer != null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/com/example/model/ModifyCustomerForm.fxml"));
+            loader.load();
+
+            ModifyCustomerFormController controller = loader.getController();
+            controller.setCustomer(customer);
+
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            Parent scene = loader.getRoot();
+            stage.setScene(new Scene(scene));
+            stage.show();} else {
+            error("No customer selected. Please select a customer and try again.");
+        }
     }
 
     @FXML

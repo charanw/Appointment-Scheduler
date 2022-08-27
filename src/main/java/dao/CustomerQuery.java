@@ -40,7 +40,7 @@ public abstract class CustomerQuery {
         ps.execute();
     }
 
-    public static void updateAppointment(int customerId, String name, String address, String postalCode, String phoneNumber, FirstLevelDivision division) throws SQLException {
+    public static void updateCustomer(int customerId, String name, String address, String postalCode, String phoneNumber, FirstLevelDivision division) throws SQLException {
         String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ps.setString(1, name);
