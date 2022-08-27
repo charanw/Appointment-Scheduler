@@ -4,6 +4,8 @@ import com.example.model.Contact;
 import com.example.model.Country;
 import com.example.model.Customer;
 import com.example.model.FirstLevelDivision;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,5 +58,16 @@ public abstract class CustomerQuery {
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ps.setString(1, (String.valueOf(customerId)));
         ps.execute();
+    }
+
+    public static ObservableList<Customer> getAllCustomers() throws SQLException {
+        ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM customers";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            allCustomers.add(retrieveCustomer(rs.getInt("Customer_ID")));
+        }
+        return allCustomers;
     }
 }

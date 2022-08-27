@@ -2,7 +2,7 @@ package controller;
 
 import com.example.model.*;
 import dao.AppointmentQuery;
-import dao.ScheduleApplicationQuery;
+import dao.CustomerQuery;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -134,7 +134,7 @@ public class MainMenuController extends Controller {
     }
     public void initialize() throws SQLException {
 
-        allCustomersTable.setItems(ScheduleApplicationQuery.getAllCustomers());
+        allCustomersTable.setItems(CustomerQuery.getAllCustomers());
         customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerId"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerName"));
         phoneColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerPhone"));
@@ -143,7 +143,7 @@ public class MainMenuController extends Controller {
         divisionColumn.setCellValueFactory(new PropertyValueFactory<Customer, FirstLevelDivision>("division"));
         countryColumn.setCellValueFactory(new PropertyValueFactory<Customer, Country>("country"));
 
-        allAppointmentsTable.setItems(ScheduleApplicationQuery.getAllAppointments());
+        allAppointmentsTable.setItems(AppointmentQuery.getAllAppointments());
         appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentId"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
@@ -181,7 +181,7 @@ public class MainMenuController extends Controller {
         String appointmentTitle = selectedAppointment.getTitle();
         if (confirmation("Are you sure you want to delete appointment #" + appointmentId + " " + appointmentTitle)){
             AppointmentQuery.deleteAppointment(appointmentId);
-            allAppointmentsTable.setItems(ScheduleApplicationQuery.getAllAppointments());
+            allAppointmentsTable.setItems(AppointmentQuery.getAllAppointments());
             alert("Appointment #" + appointmentId + " " + appointmentTitle + " deleted.");
         }} else {
             error("No appointment selected. Please select an appointment and try again.");
@@ -189,8 +189,21 @@ public class MainMenuController extends Controller {
     }
 
     @FXML
-    void deleteCustomerButtonClicked(ActionEvent event) {
-
+    void deleteCustomerButtonClicked(ActionEvent event) throws SQLException {
+        Customer customer = allCustomersTable.getSelectionModel().getSelectedItem();
+        if (customer != null) {
+            int customerId = customer.getCustomerId();
+            if (AppointmentQuery.getCustomerAppointments(customerId) == null) {
+                if (confirmation("Are you sure you want to delete customer  #" + customerId + " " + customer.getCustomerName())) {
+                    CustomerQuery.deleteCustomer(customerId);
+                    allCustomersTable.setItems(CustomerQuery.getAllCustomers());
+                }
+            } else {
+                error("You cannot delete a customer that has appointments. Please delete the customer's appointments first, then try again.");
+            }
+        } else {
+            error("No customer selected. Please select a customer and try again.");
+        }
     }
 
     @FXML

@@ -2,6 +2,8 @@ package dao;
 
 import com.example.model.Appointment;
 import com.example.model.Contact;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,4 +21,15 @@ public abstract class ContactQuery {
         }
             return null;
         }
+
+    public static ObservableList<Contact> getAllContacts() throws SQLException {
+        ObservableList<Contact> allUsers = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM contacts";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            allUsers.add(retrieveContact(rs.getInt("Contact_ID")));
+        }
+        return allUsers;
+    }
 }

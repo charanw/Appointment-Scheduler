@@ -2,10 +2,8 @@ package controller;
 
 import com.example.model.Contact;
 import com.example.model.Customer;
-import com.example.model.ScheduleApplication;
 import com.example.model.User;
-import dao.AppointmentQuery;
-import dao.ScheduleApplicationQuery;
+import dao.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,9 +15,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 
 public class AddAppointmentFormController extends Controller {
 
@@ -70,15 +66,15 @@ public class AddAppointmentFormController extends Controller {
     private TextField typeField;
 
     public void initialize() throws SQLException {
-        allContacts = ScheduleApplicationQuery.getAllContacts();
+        allContacts = ContactQuery.getAllContacts();
         contactComboBox.setItems(allContacts);
         contactComboBox.setPromptText("Select a contact:");
 
-        allUsers = ScheduleApplicationQuery.getAllUsers();
+        allUsers = UserQuery.getAllUsers();
         userComboBox.setItems(allUsers);
         userComboBox.setPromptText("Select a user:");
 
-        allCustomers = ScheduleApplicationQuery.getAllCustomers();
+        allCustomers = CustomerQuery.getAllCustomers();
         customerComboBox.setItems(allCustomers);
         customerComboBox.setPromptText("Select a customer:");
 
@@ -123,8 +119,8 @@ public class AddAppointmentFormController extends Controller {
         User user = userComboBox.getSelectionModel().getSelectedItem();
         int userId = user.getUserId();
 
-        LocalTime openTime = ScheduleApplication.getBusinessOpenTime().toLocalTime();
-        LocalTime closeTime = ScheduleApplication.getBusinessCloseTime().toLocalTime();
+        LocalTime openTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(8, 0), ZoneId.of("America/New_York")).toLocalTime();
+        LocalTime closeTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(20, 0), ZoneId.of("America/New_York")).toLocalTime();
 
 
 if (startDateTime.isBefore(endDateTime)) {
