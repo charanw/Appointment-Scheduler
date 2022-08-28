@@ -16,6 +16,8 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class AddAppointmentFormController extends Controller {
 
@@ -39,7 +41,7 @@ public class AddAppointmentFormController extends Controller {
     private DatePicker endDatePicker;
 
     @FXML
-    private ComboBox<LocalTime> endTimeComboBox;
+    private TextField endTimeField;
 
     @FXML
     private TextField idField;
@@ -54,7 +56,7 @@ public class AddAppointmentFormController extends Controller {
     private DatePicker startDatePicker;
 
     @FXML
-    private ComboBox<LocalTime> startTimeComboBox;
+    private TextField startTimeField;
 
     @FXML
     private TextField titleField;
@@ -77,20 +79,8 @@ public class AddAppointmentFormController extends Controller {
         allCustomers = CustomerQuery.getAllCustomers();
         customerComboBox.setItems(allCustomers);
         customerComboBox.setPromptText("Select a customer:");
-
-        LocalTime time = LocalTime.of(00,00);
-        while(time.isBefore(LocalTime.of(12, 00))) {
-            startTimeComboBox.getItems().add(time);
-            endTimeComboBox.getItems().add(time);
-            time = time.plusMinutes(30);
         }
-    }
 
-
-    @FXML
-    void startTimeUpdated(ActionEvent event) {
-
-    }
     @FXML
     void cancelButtonClicked(ActionEvent event) throws IOException {
         changeScene(event, "/com/example/model/MainMenu.fxml");
@@ -105,12 +95,33 @@ public class AddAppointmentFormController extends Controller {
 
         Contact contact = contactComboBox.getSelectionModel().getSelectedItem();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
         LocalDate startDate = startDatePicker.getValue();
-        LocalTime startTime = startTimeComboBox.getSelectionModel().getSelectedItem();
+
+        LocalTime startTime;
+
+        try {
+            startTime = LocalTime.parse(startTimeField.getText(), formatter);
+        } catch (Exception DateTimeParseException) {
+            error("Invalid start time entered. Please enter time as HH:mm in 24 hour format.");
+            return;
+        }
+
         LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
 
         LocalDate endDate = endDatePicker.getValue();
-        LocalTime endTime = endTimeComboBox.getSelectionModel().getSelectedItem();
+
+
+        LocalTime endTime;
+
+        try {
+            endTime = LocalTime.parse(endTimeField.getText(), formatter);
+        } catch (Exception DateTimeParseException) {
+            error("Invalid end time entered. Please enter time as HH:mm in 24 hour format.");
+            return;
+        }
+
         LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
 
         Customer customer = customerComboBox.getSelectionModel().getSelectedItem();
@@ -124,7 +135,7 @@ public class AddAppointmentFormController extends Controller {
 
 
 if (startDateTime.isBefore(endDateTime)) {
-    if (startTime.isAfter(openTime) && endTime.isBefore(closeTime)) {
+    if (startTime.isAfter(openTime.minusSeconds(1)) && endTime.isBefore(closeTime.plusSeconds(1))) {
         AppointmentQuery.addAppointment(title, description, location, type, startDateTime, endDateTime, customerId, userId, contact);
         changeScene(event, "/com/example/model/MainMenu.fxml");
     } else {

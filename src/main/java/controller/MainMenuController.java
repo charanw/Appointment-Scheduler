@@ -235,7 +235,7 @@ public class MainMenuController extends Controller {
         loader.load();
 
         ModifyAppointmentFormController controller = loader.getController();
-        controller.setAppointment(appointment);
+        controller.setData(appointment, user);
 
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         Parent scene = loader.getRoot();
