@@ -153,14 +153,25 @@ public class ModifyAppointmentFormController extends Controller {
         User user = userComboBox.getSelectionModel().getSelectedItem();
         int userId = user.getUserId();
 
+        LocalDate today = LocalDate.now();
+        LocalTime openTime = LocalTime.of(8,0);
+        LocalTime closeTime = LocalTime.of(20,0);
+        ZoneId businessTimezone = ZoneId.of("America/New_York");
 
-        LocalTime openTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(8, 0), ZoneId.of("America/New_York")).withZoneSameInstant(this.user.getUserLocation()).toLocalTime();
-        LocalTime closeTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(20, 0), ZoneId.of("America/New_York")).withZoneSameInstant(this.user.getUserLocation()).toLocalTime();
+        ZonedDateTime zonedOpenDateTime =  ZonedDateTime.of(today, openTime, businessTimezone);
+        ZonedDateTime zonedCloseDateTime =  ZonedDateTime.of(today, closeTime, businessTimezone);
+
+        LocalDateTime localOpenDateTime = zonedOpenDateTime.withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime localCloseDateTime = zonedCloseDateTime.withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
 
         if (startDateTime.isBefore(endDateTime)) {
-            if (startTime.isAfter(openTime.minusSeconds(1)) && endTime.isBefore(closeTime.plusSeconds(1))) {
-                AppointmentQuery.updateAppointment(appointmentId, title, description, location, type, startDateTime, endDateTime, customerId, userId, contact);
-                changeScene(event, "/com/example/model/MainMenu.fxml");
+            if (startDateTime.isAfter(localOpenDateTime.minusSeconds(1))) {
+                if (endDateTime.isBefore(localCloseDateTime.plusSeconds(1))) {
+                    AppointmentQuery.updateAppointment(appointmentId, title, description, location, type, startDateTime, endDateTime, customerId, userId, contact);
+                    changeScene(event, "/com/example/model/MainMenu.fxml");
+                } else {
+                    error("Invalid data. End time must be in-between business hours of 8:00 am and 10:00 pm EST.");
+                }
             } else {
                 error("Invalid data. Start time must be in-between business hours of 8:00 am and 10:00 pm EST.");
             }
@@ -168,4 +179,5 @@ public class ModifyAppointmentFormController extends Controller {
             error("Invalid data. Start date and time must be before end date and time.");
         }
     }
+
 }

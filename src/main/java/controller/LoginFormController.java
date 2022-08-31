@@ -22,6 +22,10 @@ import java.util.Locale;
 
 public class LoginFormController extends Controller {
 
+    private ZoneId userLocation;
+
+    private Locale userLanguage;
+
     @FXML
     private Button exitButton;
 
@@ -48,9 +52,9 @@ public class LoginFormController extends Controller {
 
     public void initialize(){
         this.user = new User();
-        user.setUserLocation(ZoneId.systemDefault());
-        user.setUserLanguage(Locale.getDefault());
-        locationLabel.setText("Your location is: " + user.getUserLocation());
+        this.userLocation = ZoneId.systemDefault();
+        this.userLanguage = Locale.getDefault();
+        locationLabel.setText("Your location is: " + userLocation);
     }
 
     public void recordLoginHistory(String userName, String loginType, Timestamp timestamp) throws IOException {

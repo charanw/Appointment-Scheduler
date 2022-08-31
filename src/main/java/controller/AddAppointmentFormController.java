@@ -8,16 +8,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 public class AddAppointmentFormController extends Controller {
 
@@ -67,6 +68,13 @@ public class AddAppointmentFormController extends Controller {
     @FXML
     private TextField typeField;
 
+    @FXML
+    private Label startTimeZoneLabel;
+
+
+    @FXML
+    private Label endTimeZoneLabel;
+
     public void initialize() throws SQLException {
         allContacts = ContactQuery.getAllContacts();
         contactComboBox.setItems(allContacts);
@@ -79,6 +87,9 @@ public class AddAppointmentFormController extends Controller {
         allCustomers = CustomerQuery.getAllCustomers();
         customerComboBox.setItems(allCustomers);
         customerComboBox.setPromptText("Select a customer:");
+
+        startTimeZoneLabel.setText(ZoneId.systemDefault().getDisplayName(TextStyle.SHORT.asStandalone(), Locale.US));
+        endTimeZoneLabel.setText(ZoneId.systemDefault().getDisplayName(TextStyle.SHORT.asStandalone(), Locale.US));
         }
 
     @FXML
@@ -130,14 +141,25 @@ public class AddAppointmentFormController extends Controller {
         User user = userComboBox.getSelectionModel().getSelectedItem();
         int userId = user.getUserId();
 
-        LocalTime openTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(8, 0), ZoneId.of("America/New_York")).toLocalTime();
-        LocalTime closeTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(20, 0), ZoneId.of("America/New_York")).toLocalTime();
+        LocalDate today = LocalDate.now();
+        LocalTime openTime = LocalTime.of(8,0);
+        LocalTime closeTime = LocalTime.of(20,0);
+        ZoneId businessTimezone = ZoneId.of("America/New_York");
 
+        ZonedDateTime zonedOpenDateTime =  ZonedDateTime.of(today, openTime, businessTimezone);
+        ZonedDateTime zonedCloseDateTime =  ZonedDateTime.of(today, closeTime, businessTimezone);
+
+        LocalDateTime localOpenDateTime = zonedOpenDateTime.withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime localCloseDateTime = zonedCloseDateTime.withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
 
 if (startDateTime.isBefore(endDateTime)) {
-    if (startTime.isAfter(openTime.minusSeconds(1)) && endTime.isBefore(closeTime.plusSeconds(1))) {
-        AppointmentQuery.addAppointment(title, description, location, type, startDateTime, endDateTime, customerId, userId, contact);
-        changeScene(event, "/com/example/model/MainMenu.fxml");
+    if (!startDateTime.isBefore(localOpenDateTime.minusSeconds(1))) {
+        if (!endDateTime.isAfter(localCloseDateTime.plusSeconds(1))) {
+            AppointmentQuery.addAppointment(title, description, location, type, startDateTime, endDateTime, customerId, userId, contact);
+            changeScene(event, "/com/example/model/MainMenu.fxml");
+        } else {
+            error("Invalid data. End time must be in-between business hours of 8:00 am and 10:00 pm EST.");
+        }
     } else {
         error("Invalid data. Start time must be in-between business hours of 8:00 am and 10:00 pm EST.");
     }

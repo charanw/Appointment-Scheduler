@@ -9,10 +9,6 @@ public class User {
     private String userName;
     private String password;
 
-    private ZoneId userLocation;
-
-    private Locale userLanguage;
-
     public int getUserId() {
         return userId;
     }
@@ -37,33 +33,15 @@ public class User {
         this.password = password;
     }
 
-    public ZoneId getUserLocation() {
-        return userLocation;
-    }
-
-    public void setUserLocation(ZoneId userLocation) {
-        this.userLocation = userLocation;
-    }
-
-    public Locale getUserLanguage() {
-        return userLanguage;
-    }
-
-    public void setUserLanguage(Locale userLanguage) {
-        this.userLanguage = userLanguage;
-    }
-
     public User(int userId, String userName) {
         this.userId = userId;
         this.userName = userName;
     }
 
-    public User(int userId, String userName, String password, ZoneId userLocation, Locale userLanguage) {
+    public User(int userId, String userName, String password) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
-        this.userLocation = userLocation;
-        this.userLanguage = userLanguage;
     }
 
     public User() {
